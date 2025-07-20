@@ -1,8 +1,7 @@
 import './App.scss'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { PostList } from '../PostList/PostList'
-import { MyButton } from '../UI/button/MyButton'
-import { MyInput } from '../UI/input/MyInput'
+import { PostForm } from '../PostForm/PostForm'
 
 export const App = () => {
   const [posts, setPosts] = useState([
@@ -12,28 +11,13 @@ export const App = () => {
     { id: 4, title: 'TSX 4', body: 'Description' },
   ])
 
-  const [title, setTitle] = useState('')
-  const [body, setBody] = useState('')
-
-  const addNewPost = (e) => {
-    e.preventDefault()
-    const newPost = {
-      id: Date.now(),
-      title,
-      body,
-    }
+  const createPost = (newPost) => {
     setPosts([...posts, newPost])
-    setTitle('')
-    setBody('')
   }
 
   return (
     <div className='app'>
-      <form>
-        <MyInput value={title} onChange={(e) => setTitle(e.target.value)} type='text' placeholder='Заголовок поста' />
-        <MyInput value={body} onChange={(e) => setBody(e.target.value)} type='text' placeholder='Описание поста' />
-        <MyButton onClick={addNewPost}>Создать пост</MyButton>
-      </form>
+      <PostForm create={createPost} />
       <PostList posts={posts} title='Список постов' />
     </div>
   )
