@@ -4,11 +4,11 @@ export const Counter = () => {
   const [count, setCount] = useState(0)
 
   function increm() {
-    setCount(count + 1)
+    setCount((prev) => prev + 1)
   }
 
   function decrem() {
-    setCount(count - 1)
+    setCount((prev) => prev - 1)
   }
 
   return (

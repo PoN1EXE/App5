@@ -2,23 +2,27 @@ import './App.scss'
 import { useState } from 'react'
 import { PostList } from '../PostList/PostList'
 import { PostForm } from '../PostForm/PostForm'
+import { PostConst } from '../PostConst/PostConst'
 
 export const App = () => {
-  const [posts, setPosts] = useState([
-    { id: 1, title: 'TSX', body: 'Description' },
-    { id: 2, title: 'TSX 2', body: 'Description' },
-    { id: 3, title: 'TSX 3', body: 'Description' },
-    { id: 4, title: 'TSX 4', body: 'Description' },
-  ])
+  const [posts, setPosts] = useState(PostConst)
 
-  const createPost = (newPost) => {
+  const createPostNew = (newPost) => {
     setPosts([...posts, newPost])
+  }
+
+  const removePostBtn = (post) => {
+    setPosts(posts.filter((p) => p.id !== post.id))
   }
 
   return (
     <div className='app'>
-      <PostForm create={createPost} />
-      <PostList posts={posts} title='Список постов' />
+      <PostForm createPost={createPostNew} />
+      {posts.length ? (
+        <PostList removePost={removePostBtn} posts={posts} title='Список постов' />
+      ) : (
+        <h1>Постов нет!</h1>
+      )}
     </div>
   )
 }

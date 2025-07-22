@@ -2,7 +2,7 @@ import { MyButton } from '../UI/button/MyButton'
 import { MyInput } from '../UI/input/MyInput'
 import { useState } from 'react'
 
-export const PostForm = ({ create }) => {
+export const PostForm = ({ createPost }) => {
   const [post, setPost] = useState({ title: '', body: '' })
 
   const addNewPost = (e) => {
@@ -11,12 +11,12 @@ export const PostForm = ({ create }) => {
       ...post,
       id: Date.now(),
     }
-    create(newPost)
+    createPost(newPost)
     setPost({ title: '', body: '' })
   }
 
   return (
-    <form>
+    <form onSubmit={addNewPost}>
       <MyInput
         value={post.title}
         onChange={(e) => setPost({ ...post, title: e.target.value })}
@@ -29,7 +29,7 @@ export const PostForm = ({ create }) => {
         type='text'
         placeholder='Описание поста'
       />
-      <MyButton onClick={addNewPost}>Создать пост</MyButton>
+      <MyButton type='submit'>Создать пост</MyButton>
     </form>
   )
 }
