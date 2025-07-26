@@ -1,17 +1,17 @@
 import styles from './PostItem.module.scss'
 import { MyButton } from '../UI/button/MyButton'
 
-export const PostItem = (props, removePost) => {
+export const PostItem = ({ number, post, removePost }) => {
   return (
     <div className={styles.post}>
       <div className={styles.postContent}>
         <strong>
-          {props.number} {props.post.title}
+          {number} {post.title}
         </strong>
-        <div> {props.post.body}</div>
+        <div> {post.body}</div>
       </div>
       <div className={styles.postBtns}>
-        <MyButton onClick={() => props.removePost(props.post)}>Удалить</MyButton>
+        <MyButton onClick={() => removePost(post)}>Удалить</MyButton>
       </div>
     </div>
   )

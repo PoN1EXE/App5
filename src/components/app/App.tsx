@@ -2,12 +2,14 @@ import './App.scss'
 import { useState } from 'react'
 import { PostList } from '../PostList/PostList'
 import { PostForm } from '../PostForm/PostForm'
-import { PostConst } from '../PostConst/PostConst'
+import { postsConst } from '../../constants'
 import { MySelect } from '../UI/select/MySelect'
+import { MyInput } from '../UI/input/MyInput'
 
 export const App = () => {
-  const [posts, setPosts] = useState(PostConst)
+  const [posts, setPosts] = useState(postsConst)
   const [selectedSort, setSelectedSort] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
 
   const sortPosts = (sort) => {
     setSelectedSort(sort)
@@ -27,6 +29,7 @@ export const App = () => {
       <PostForm createPost={createPostNew} />
       <hr style={{ margin: '15px 0' }} />
       <div>
+        <MyInput placeholder='Поиск...' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
         <MySelect
           value={selectedSort}
           onChange={sortPosts}
