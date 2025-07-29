@@ -1,26 +1,30 @@
 import './App.scss'
-import { useState } from 'react'
-import { PostList } from '../PostList/PostList'
-import { PostForm } from '../PostForm/PostForm'
+import { useMemo, useState } from 'react'
+import { PostList } from '../UI/PostList/PostList'
+import { PostForm } from '../UI/PostForm/PostForm'
 import { postsConst } from '../../constants'
-import { MySelect } from '../UI/select/MySelect'
-import { MyInput } from '../UI/input/MyInput'
+import { PostFilter } from '../UI/PostFilter'
+import type { Post } from '../types/Post'
+
+interface Filter {
+  sort: string
+  query: string
+}
 
 export const App = () => {
-  const [posts, setPosts] = useState(postsConst)
-  const [selectedSort, setSelectedSort] = useState('')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [posts, setPosts] = useState<Post[]>(postsConst)
+  const [filter, setFilter] = useState<Filter>({ sort: '', query: '' })
 
-  const sortPosts = (sort) => {
-    setSelectedSort(sort)
-    setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
-  }
+  const sortedAndSearchedPosts = useMemo(() => {
+    const sorted = filter.sort ? [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort])) : posts
+    return sorted.filter((post) => post.title.toLowerCase().includes(filter.query.toLowerCase()))
+  }, [filter.sort, filter.query, posts])
 
-  const createPostNew = (newPost) => {
+  const createPostNew = (newPost: Post) => {
     setPosts([...posts, newPost])
   }
 
-  const removePostBtn = (post) => {
+  const removePostBtn = (post: Post) => {
     setPosts(posts.filter((p) => p.id !== post.id))
   }
 
@@ -28,20 +32,9 @@ export const App = () => {
     <div className='app'>
       <PostForm createPost={createPostNew} />
       <hr style={{ margin: '15px 0' }} />
-      <div>
-        <MyInput placeholder='Поиск...' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-        <MySelect
-          value={selectedSort}
-          onChange={sortPosts}
-          defaultValue='Сортировка'
-          options={[
-            { value: 'title', name: 'По названию' },
-            { value: 'body', name: 'По описанию' },
-          ]}
-        />
-      </div>
-      {posts.length ? (
-        <PostList removePost={removePostBtn} posts={posts} title='Список постов' />
+      <PostFilter filter={filter} setFilter={setFilter} />
+      {sortedAndSearchedPosts.length ? (
+        <PostList removePost={removePostBtn} posts={sortedAndSearchedPosts} title='Список постов' />
       ) : (
         <h1>Постов нет!</h1>
       )}

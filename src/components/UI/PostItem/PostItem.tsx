@@ -1,7 +1,14 @@
 import styles from './PostItem.module.scss'
-import { MyButton } from '../UI/button/MyButton'
+import { MyButton } from '../button/MyButton'
+import type { Post } from '../../types/Post'
 
-export const PostItem = ({ number, post, removePost }) => {
+interface PostItemProps {
+  number: number
+  post: Post
+  removePost: (post: Post) => void
+}
+
+export const PostItem = ({ number, post, removePost }: PostItemProps) => {
   return (
     <div className={styles.post}>
       <div className={styles.postContent}>
