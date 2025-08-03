@@ -1,6 +1,6 @@
 import cl from './MyModal.module.scss'
 import type { MouseEvent } from 'react'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 interface MyModalProps {
   children: ReactNode

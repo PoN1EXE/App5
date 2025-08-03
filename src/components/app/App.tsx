@@ -8,6 +8,7 @@ import { useFilteredPosts } from '../hooks/useFilteredPosts'
 import type { Post } from '../types/Post'
 import { MyModal } from '../UI/MyModal/MyModal'
 import { MyButton } from '../UI/button/MyButton'
+import axios from 'axios'
 
 export const App = () => {
   const [posts, setPosts] = useState<Post[]>(postsConst)
@@ -23,10 +24,18 @@ export const App = () => {
     setPosts(posts.filter((p) => p.id !== post.id))
   }
 
+  async function fetchPosts() {
+    const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
+    setPosts(response.data)
+  }
+
   return (
     <div className='app'>
       <MyButton style={{ marginTop: 30 }} onClick={() => setModal(true)}>
         Создать пост
+      </MyButton>
+      <MyButton style={{ margin: '30px 30px 0 0' }} onClick={fetchPosts}>
+        Загрузить посты
       </MyButton>
       <MyModal visible={modal} setVisible={setModal}>
         <PostForm createPost={createPostNew} />

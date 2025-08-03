@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import styles from './PostItem.module.scss'
 import { MyButton } from '../button/MyButton'
 import type { Post } from '../../types/Post'
@@ -8,9 +9,9 @@ interface PostItemProps {
   removePost: (post: Post) => void
 }
 
-export const PostItem = ({ number, post, removePost }: PostItemProps) => {
+export const PostItem = forwardRef<HTMLDivElement, PostItemProps>(({ number, post, removePost }, ref) => {
   return (
-    <div className={styles.post}>
+    <div ref={ref} className={styles.post}>
       <div className={styles.postContent}>
         <strong>
           {number} {post.title}
@@ -22,4 +23,4 @@ export const PostItem = ({ number, post, removePost }: PostItemProps) => {
       </div>
     </div>
   )
-}
+})
