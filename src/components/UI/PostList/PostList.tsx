@@ -8,6 +8,9 @@ interface PostListProps {
 }
 
 export const PostList = ({ posts, title, removePost }: PostListProps) => {
+  if (!posts.length) {
+    return <h1 style={{ textAlign: 'center' }}>Посты не найдены!</h1>
+  }
   return (
     <div>
       <h1>{title}</h1>

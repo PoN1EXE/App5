@@ -1,27 +1,22 @@
 import './App.scss'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { PostList } from '../UI/PostList/PostList'
 import { PostForm } from '../UI/PostForm/PostForm'
 import { postsConst } from '../../constants'
 import { PostFilter } from '../UI/PostFilter'
+import { useFilteredPosts } from '../hooks/useFilteredPosts'
 import type { Post } from '../types/Post'
-
-interface Filter {
-  sort: string
-  query: string
-}
+import { MyModal } from '../UI/MyModal/MyModal'
+import { MyButton } from '../UI/button/MyButton'
 
 export const App = () => {
   const [posts, setPosts] = useState<Post[]>(postsConst)
-  const [filter, setFilter] = useState<Filter>({ sort: '', query: '' })
-
-  const sortedAndSearchedPosts = useMemo(() => {
-    const sorted = filter.sort ? [...posts].sort((a, b) => a[filter.sort].localeCompare(b[filter.sort])) : posts
-    return sorted.filter((post) => post.title.toLowerCase().includes(filter.query.toLowerCase()))
-  }, [filter.sort, filter.query, posts])
+  const { filter, setFilter, sortedAndSearchedPosts } = useFilteredPosts(posts)
+  const [modal, setModal] = useState(false)
 
   const createPostNew = (newPost: Post) => {
     setPosts([...posts, newPost])
+    setModal(false)
   }
 
   const removePostBtn = (post: Post) => {
@@ -30,14 +25,15 @@ export const App = () => {
 
   return (
     <div className='app'>
-      <PostForm createPost={createPostNew} />
+      <MyButton style={{ marginTop: 30 }} onClick={() => setModal(true)}>
+        Создать пост
+      </MyButton>
+      <MyModal visible={modal} setVisible={setModal}>
+        <PostForm createPost={createPostNew} />
+      </MyModal>
       <hr style={{ margin: '15px 0' }} />
       <PostFilter filter={filter} setFilter={setFilter} />
-      {sortedAndSearchedPosts.length ? (
-        <PostList removePost={removePostBtn} posts={sortedAndSearchedPosts} title='Список постов' />
-      ) : (
-        <h1>Постов нет!</h1>
-      )}
+      <PostList removePost={removePostBtn} posts={sortedAndSearchedPosts} title='Список постов' />
     </div>
   )
 }
