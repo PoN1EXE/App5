@@ -1,15 +1,13 @@
-import { About } from '../../pages/About'
-import { Posts } from '../../pages/Posts'
+import { AppRouter } from '../UI/AppRouter/AppRouter'
+import { Navbar } from '../UI/Navbar/Navbar'
+import { BrowserRouter } from 'react-router-dom'
 import './App.scss'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 export const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path='/about' element={<About />} />
-        <Route path='/posts' element={<Posts />} />
-      </Routes>
+      <Navbar />
+      <AppRouter />
     </BrowserRouter>
   )
 }

@@ -12,7 +12,7 @@ interface PostItemProps {
 export const PostItem = forwardRef<HTMLDivElement, PostItemProps>(({ number, post, removePost }, ref) => {
   return (
     <div ref={ref} className={styles.post}>
-      <div className={styles.postContent}>
+      <div>
         <strong>
           {post.id} {post.title}
         </strong>
