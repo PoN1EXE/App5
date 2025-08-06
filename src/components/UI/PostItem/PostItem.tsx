@@ -14,7 +14,7 @@ export const PostItem = forwardRef<HTMLDivElement, PostItemProps>(({ number, pos
     <div ref={ref} className={styles.post}>
       <div className={styles.postContent}>
         <strong>
-          {number} {post.title}
+          {post.id} {post.title}
         </strong>
         <div> {post.body}</div>
       </div>
