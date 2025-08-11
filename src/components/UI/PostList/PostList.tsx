@@ -1,8 +1,8 @@
-import React, { useRef } from 'react'
+import React, { useRef, useMemo } from 'react'
 import { PostItem } from '../PostItem/PostItem'
 import type { Post } from '../../types/Post'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import styles from './PostList.module.scss'
+import style from './PostList.module.scss'
 
 interface PostListProps {
   posts: Post[]
@@ -11,23 +11,25 @@ interface PostListProps {
 }
 
 const classNames = {
-  enter: styles['post-enter'],
-  enterActive: styles['post-enter-active'],
-  exit: styles['post-exit'],
-  exitActive: styles['post-exit-active'],
+  enter: style['postEnter'],
+  enterActive: style['postEnterActive'],
+  exit: style['postExit'],
+  exitActive: style['postExitActive'],
 }
 
 export const PostList = ({ posts, title, removePost }: PostListProps) => {
   const nodeRefs = useRef<Record<string, React.RefObject<HTMLDivElement | null>>>({})
 
-  posts.forEach((post) => {
-    if (!nodeRefs.current[post.id]) {
-      nodeRefs.current[post.id] = React.createRef<HTMLDivElement>()
-    }
-  })
+  useMemo(() => {
+    posts.forEach((post) => {
+      if (!nodeRefs.current[post.id]) {
+        nodeRefs.current[post.id] = React.createRef<HTMLDivElement>()
+      }
+    })
+  }, [posts])
 
   if (!posts.length) {
-    return <h1 style={{ textAlign: 'center' }}>Посты не найдены!</h1>
+    return <h1 className={style.h1}>Посты не найдены!</h1>
   }
 
   return (

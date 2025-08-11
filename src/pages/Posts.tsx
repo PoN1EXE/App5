@@ -12,7 +12,7 @@ import { useFetching } from '../components/hooks/useFetching'
 import { getPageCount } from '../components/utils/pages'
 import { Pagination } from '../components/UI/pagination/Pagination'
 import { MyButton } from './../components/UI/button/MyButton'
-import './Posts.scss'
+import style from './Posts.module.scss'
 
 export const Posts = () => {
   const [posts, setPosts] = useState<Post[]>(postsConst)
@@ -23,15 +23,14 @@ export const Posts = () => {
   const [page, setPage] = useState(1)
 
   const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
-    const response = await PostService.getAll(limit, page)
-    setPosts(response.data)
-    const totalCount = response.headers['x-total-count']
-    setTotalPages(getPageCount(totalCount, limit))
-  }, [])
+    const { data, total } = await PostService.getAll(limit, page)
+    setPosts(data)
+    setTotalPages(getPageCount(total, limit))
+  }, [limit, page])
 
   useEffect(() => {
     fetchPosts()
-  }, [page])
+  }, [limit, page])
 
   const changePage = (page) => {
     setPage(page)
@@ -42,28 +41,28 @@ export const Posts = () => {
     setModal(false)
   }
 
-  const removePostBtn = (post: Post) => {
+  const removePost = (post: Post) => {
     setPosts(posts.filter((p) => p.id !== post.id))
   }
 
   return (
-    <div className='app'>
-      <MyButton style={{ marginTop: 30 }} onClick={() => setModal(true)}>
+    <div className={style.app}>
+      <MyButton className={style.myButton} onClick={() => setModal(true)}>
         Создать пост
       </MyButton>
 
       <MyModal visible={modal} setVisible={setModal}>
         <PostForm createPost={createPostNew} />
       </MyModal>
-      <hr style={{ margin: '15px 0' }} />
+      <hr className={style.hr} />
       <PostFilter filter={filter} setFilter={setFilter} />
       {postError && <h1>Ошибка! ${postError}</h1>}
       {isPostsLoading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 50 }}>
+        <div className={style.postsLoading}>
           <Loader />
         </div>
       ) : (
-        <PostList removePost={removePostBtn} posts={sortedAndSearchedPosts} title='Список постов' />
+        <PostList removePost={removePost} posts={sortedAndSearchedPosts} title='Список постов' />
       )}
       <Pagination page={page} changePage={changePage} totalPages={totalPages} />
     </div>

@@ -1,14 +1,18 @@
-.post-enter {
+.postEnter {
   transform: translateX(-350px);
 }
-.post-enter-active {
+.postEnterActive {
   transform: translateX(0px);
   transition: all 500ms ease-in;
 }
-.post-exit {
+.postExit {
   opacity: 1;
 }
-.post-exit-active {
+.postExitActive {
   transform: translateX(-350px);
   transition: all 500ms ease-out;
+}
+
+.h1 {
+  text-align: center;
 }

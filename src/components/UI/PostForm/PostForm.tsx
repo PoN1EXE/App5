@@ -2,15 +2,10 @@ import { MyButton } from '../button/MyButton'
 import { MyInput } from '../input/MyInput'
 import { useState } from 'react'
 import type { ChangeEvent, FormEvent } from 'react'
+import type { Post } from '../../types/Post'
 
 interface PostFormProps {
   createPost: (post: Post) => void
-}
-
-interface Post {
-  id: number
-  title: string
-  body: string
 }
 
 export const PostForm = ({ createPost }: PostFormProps) => {

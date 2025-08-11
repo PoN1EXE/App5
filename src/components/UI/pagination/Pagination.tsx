@@ -1,5 +1,7 @@
 import { MyButton } from '../button/MyButton'
 import { getPagesArray } from '../../utils/pages'
+import style from './Pagination.module.scss'
+import { useMemo } from 'react'
 
 interface PaginationProps {
   totalPages: number
@@ -8,18 +10,15 @@ interface PaginationProps {
 }
 
 export const Pagination = ({ totalPages, page, changePage }: PaginationProps) => {
-  const pagesArray = getPagesArray(totalPages)
+  const pagesArray = useMemo(() => getPagesArray(totalPages), [totalPages])
 
   return (
-    <div style={{ marginTop: 30 }}>
+    <div className={style.div}>
       {pagesArray.map((p) => (
         <MyButton
           key={p}
           onClick={() => changePage(p)}
-          style={{
-            fontWeight: p === page ? 'bold' : 'normal',
-            border: p === page ? '2px solid black' : '1px solid gray',
-          }}>
+          className={`${style.pageBtn} ${p === page ? style.active : ''}`}>
           {p}
         </MyButton>
       ))}

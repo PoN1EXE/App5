@@ -1,6 +1,6 @@
 import cl from './MyModal.module.scss'
-import type { MouseEvent } from 'react'
-import type { ReactNode } from 'react'
+import clsx from 'clsx'
+import type { MouseEvent, ReactNode } from 'react'
 
 interface MyModalProps {
   children: ReactNode
@@ -9,10 +9,9 @@ interface MyModalProps {
 }
 
 export const MyModal = ({ children, visible, setVisible }: MyModalProps) => {
-  const rootClasses = [cl.myModal]
-  if (visible) {
-    rootClasses.push(cl.active)
-  }
+  const rootClasses = clsx(cl.myModal, {
+    [cl.active]: visible,
+  })
 
   const handleBackgroundClick = () => {
     setVisible(false)
@@ -23,7 +22,7 @@ export const MyModal = ({ children, visible, setVisible }: MyModalProps) => {
   }
 
   return (
-    <div className={rootClasses.join(' ')} onClick={handleBackgroundClick}>
+    <div className={rootClasses} onClick={handleBackgroundClick}>
       <div className={cl.myModalContent} onClick={stopPropagation}>
         {children}
       </div>
