@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Outlet } from 'react-router-dom' // ← добавляем
 import { PostList } from '../components/UI/PostList/PostList'
 import { PostForm } from '../components/UI/PostForm/PostForm'
 import { postsConst } from '../constants'
@@ -56,7 +57,7 @@ export const Posts = () => {
       </MyModal>
       <hr className={style.hr} />
       <PostFilter filter={filter} setFilter={setFilter} />
-      {postError && <h1>Ошибка! ${postError}</h1>}
+      {postError && <h1>Ошибка! {postError}</h1>}
       {isPostsLoading ? (
         <div className={style.postsLoading}>
           <Loader />
@@ -65,6 +66,7 @@ export const Posts = () => {
         <PostList removePost={removePost} posts={sortedAndSearchedPosts} title='Список постов' />
       )}
       <Pagination page={page} changePage={changePage} totalPages={totalPages} />
+      <Outlet />
     </div>
   )
 }
