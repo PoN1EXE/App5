@@ -8,6 +8,7 @@ import { useFetching } from '../components/hooks/useFetching'
 export const PostIdPage = () => {
   const { id } = useParams<{ id: string }>()
   const [post, setPost] = useState<Post | null>(null)
+  const [comments, setComments] = useState<Comment[]>([])
 
   // useFetching теперь поддерживает аргументы
   const [fetchPostById, isLoading, error] = useFetching(async (postId: number) => {
@@ -15,9 +16,15 @@ export const PostIdPage = () => {
     setPost(response.data)
   })
 
+  const [fetchComments, isComLoading, comError] = useFetching(async (postId: number) => {
+    const response = await PostService.getComById(postId)
+    setComments(response.data)
+  })
+
   useEffect(() => {
     if (id) {
       fetchPostById(Number(id))
+      fetchComments(Number(id))
     }
   }, [id])
 
@@ -33,6 +40,17 @@ export const PostIdPage = () => {
           {post.id}. {post.title}
         </div>
       )}
+      <h1>Комментарии</h1>
+      {isComLoading && <Loader />}
+      {comError && <p style={{ color: 'red' }}>{comError}</p>}
+      {post &&
+        !isComLoading &&
+        comments.map((comm) => (
+          <div style={{ marginTop: 25 }} key={comm.id}>
+            <h3>{comm.email}</h3>
+            <div>{comm.body}</div>
+          </div>
+        ))}
     </div>
   )
 }

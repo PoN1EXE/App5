@@ -26,7 +26,7 @@ export const Posts = () => {
   const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
     const { data, total } = await PostService.getAll(limit, page)
     setPosts(data)
-    setTotalPages(getPageCount(total, limit))
+    setTotalPages(getPageCount({ totalCount: total, limit }))
   }, [limit, page])
 
   useEffect(() => {

@@ -10,7 +10,7 @@ interface PaginationProps {
 }
 
 export const Pagination = ({ totalPages, page, changePage }: PaginationProps) => {
-  const pagesArray = useMemo(() => getPagesArray(totalPages), [totalPages])
+  const pagesArray = useMemo(() => getPagesArray({ totalPages }), [totalPages])
 
   return (
     <div className={style.div}>
